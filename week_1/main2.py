@@ -1,21 +1,28 @@
 # build basic todo app
 # with a list of tasks
 
-Todo_list = []
+Todo_list = {}
+task_id = 1
 def add_task(task):
-    Todo_list.append(task)
-    print(f"Task '{task}' added to the list.")
+    global task_id
+    Todo_list[task_id] = task
+    print(f"Task '{task}' added to the list with ID {task_id}.")
+    task_id += 1
 def remove_task(task):
-    if task in Todo_list:
-        Todo_list.remove(task)
-        print(f"Task '{task}' removed from the list.")
-    else:
-        print(f"Task '{task}' not found in the list.")
+   try:
+        task_id = int(task)
+        if task_id in Todo_list:
+            removed_task = Todo_list.pop(task_id)
+            print(f"Task '{removed_task}' with ID {task_id} removed from the list.")
+        else:
+            print(f"Task ID {task_id} not found in the list.")
+   except ValueError:
+        print("Invalid task ID. Please enter a valid number.")
 def view_tasks():
-    if Todo_list:
+    if  Todo_list:
         print("Todo List:")
-        for i, task in enumerate(Todo_list, start=1):
-            print(f"{i}. {task}")
+        for task_id, task in Todo_list.items():
+            print(f"{task_id}. {task}")
     else:
         print("Todo list is empty.")
 def main():
@@ -30,8 +37,8 @@ def main():
             task = input("Enter a task: ")
             add_task(task)
         elif choice == "2":
-            task = input("Enter the task to remove: ")
-            remove_task(task)
+            task = input("Enter the task ID to remove: ")
+            remove_task(task_id)
         elif choice == "3":
             view_tasks()
         elif choice == "4":
